@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { colors } from '../styles/colors';
-import logo from '../assets/icons/logo.svg';
+import logo from '../assets/images/logo.png';
 
 interface LoginProps {
   onLogin: () => void;
@@ -13,28 +13,32 @@ const LoginContainer = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background: linear-gradient(135deg, ${colors.primaryGreen}, ${colors.darkGreen});
+  background: radial-gradient(circle at center, ${colors.highlightPurple} 40%, ${colors.white} 60%);
 `;
+const LogoImg = styled.img<{ visible: boolean }>`
+  width: auto;
+  height: 160px;
+  opacity: ${props => (props.visible ? 1 : 0)};
+  transition: opacity 1s ease;
+  padding-left: 10%;
+  `;
 
 const Logo = styled.div`
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background-color: ${colors.white};
-  margin-bottom: 2rem;
+  margin-bottom: not-allowed;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${colors.primaryGreen};
-  font-size: 2rem;
-  font-weight: bold;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 `;
 
-const Title = styled.h1`
-  color: ${colors.white};
+const Title = styled.h1<{ welcome?: boolean }>`
+  color: ${colors.black};
   margin-bottom: 2rem;
+  font-family: Poppins, Arial, sans-serif;
+  font-weight: ${props => (props.welcome ? 1000 : 600)};
+  color: ${props => (props.welcome ? colors.highlightGreen : colors.black)};
+  justify-content: center;
 `;
+
 
 const SingpassButton = styled.button`
   background-color: ${colors.white};
@@ -69,6 +73,12 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [showGreeting, setShowGreeting] = useState(false);
+  const [logoVisible, setLogoVisible] = useState(false);
+
+    useEffect(() => {
+    // Fade in logo after mount
+    setLogoVisible(true);
+  }, []);
 
   // In a real app, you would verify Singpass here
   const handleLogin = () => {
@@ -79,12 +89,14 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     }, 1500);
   };
 
-  return (
+   return (
     <LoginContainer>
-      <Logo>        <img src={logo} alt="AnyHealth Logo" style={{ width: 100, height: 100, alignItems: 'center'}} /> </Logo>
+      <Logo>
+        <LogoImg src={logo} alt="AnyHealth Logo" visible={logoVisible} />
+      </Logo>
       {!showGreeting ? (
         <>
-          <Title>Welcome to Anyhealth</Title>
+          <Title welcome> Welcome!</Title>
           <Input
             type="text"
             placeholder="Enter your name"

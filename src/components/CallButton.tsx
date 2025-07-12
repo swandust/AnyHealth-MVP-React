@@ -15,8 +15,8 @@ const ButtonContainer = styled.div`
 `;
 
 const CallCircle = styled.button`
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   background-color: ${colors.highlightGreen};
   border: none;
@@ -27,6 +27,7 @@ const CallCircle = styled.button`
   box-shadow: 0 4px 15px rgba(80, 155, 82, 0.4);
   transition: all 0.3s ease;
   margin-bottom: 0.5rem;
+  gap: 1rem;
 
   &:hover {
     transform: scale(1.05);
@@ -34,8 +35,8 @@ const CallCircle = styled.button`
 `;
 
 const CaregiverImage = styled.img`
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid ${colors.white};
@@ -44,6 +45,7 @@ const CaregiverImage = styled.img`
 const CallLabel = styled.span`
   color: ${colors.black};
   font-weight: bold;
+  font-size: 1.2rem;
 `;
 
 

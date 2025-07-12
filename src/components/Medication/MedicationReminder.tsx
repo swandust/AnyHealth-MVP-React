@@ -48,7 +48,7 @@ const MedicationReminder: React.FC = () => {
             </div>
           </MedicationInfo>
           {med.taken ? (
-            <StatusBadge success>Good Job!</StatusBadge>
+            <StatusBadge success>Taken!</StatusBadge>
           ) : med.missed ? (
             <StatusBadge urgent>PLEASE TAKE NOW</StatusBadge>
           ) : (

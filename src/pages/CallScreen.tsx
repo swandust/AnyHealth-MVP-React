@@ -56,6 +56,8 @@ const CallControls = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
 `;
 
 const ControlButton = styled.button`
@@ -80,6 +82,7 @@ const EndCallButton = styled.button`
   border-radius: 25px;
   font-weight: bold;
   cursor: pointer;
+  margin-top: 1rem;
 `;
 
 // Properly typed AIMessage component

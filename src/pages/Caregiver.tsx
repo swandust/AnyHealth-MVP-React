@@ -5,6 +5,12 @@ import BottomNav from '../components/BottomNav';
 import CallButton from '../components/CallButton';
 import RefillPurchase from '../components/Medication/RefillPurchase';
 
+import HealthStats from '../components/HealthStats';
+import MedicationCalendar from '../components/Medication/MedicationCalendar';
+
+
+
+
 interface CaregiverProps {
   toggleView: () => void;
   startCall: () => void;
@@ -76,6 +82,18 @@ const Caregiver: React.FC<CaregiverProps> = ({ toggleView, startCall }) => {
           <SectionTitle>Medication Refill</SectionTitle>
           <RefillPurchase />
         </Section>
+
+        <Section>
+            <SectionTitle>Patient Medication History</SectionTitle>
+            <MedicationCalendar />
+        </Section>
+        
+        <Section>
+          <SectionTitle>Patient Health Today</SectionTitle>
+          <HealthStats />
+        </Section>
+
+
       </CaregiverContainer>
       
       <BottomNav isCaregiverView={true} toggleView={toggleView} />
