@@ -103,6 +103,7 @@ const CallScreen: React.FC<CallScreenProps> = ({ endCall, isCaregiverView }) => 
   const [showAIPrompt, setShowAIPrompt] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
   const [showSummary, setShowSummary] = useState(false);
+  const [cameraActive, setCameraActive] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   
   const today = getToday();
@@ -136,27 +137,54 @@ const CallScreen: React.FC<CallScreenProps> = ({ endCall, isCaregiverView }) => 
     return () => clearInterval(timer);
   }, []);
 
-  // Simulate local video stream
+  
+// Handle camera stream with better mobile support
   useEffect(() => {
     let stream: MediaStream | null = null;
-    if (videoRef.current) {
-      navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-        .then(mediaStream => {
-          stream = mediaStream;
-          videoRef.current!.srcObject = mediaStream;
-        })
-        .catch(err => {
-          // Optionally handle error (e.g., user denied camera)
-          console.error("Camera error:", err);
+
+    const enableStream = async () => {
+      try {
+        // First check if we have permissions
+        const permissions = await navigator.permissions.query({ name: 'camera' as any });
+        if (permissions.state === 'denied') {
+          console.warn('Camera permission denied');
+          return;
+        }
+
+        // Get user media with mobile-friendly constraints
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: 'user', // Use front camera
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          },
+          audio: false
         });
-    }
+
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          setCameraActive(true);
+          
+          // iOS specific fix - play the video programmatically
+          videoRef.current.playsInline = true;
+          videoRef.current.play().catch(e => console.warn('Video play error:', e));
+        }
+      } catch (err) {
+        console.error('Camera error:', err);
+        // Fallback to showing just the background if camera fails
+        setCameraActive(false);
+      }
+    };
+
+    enableStream();
+
     return () => {
-      // Clean up: stop all tracks when component unmounts
       if (stream) {
         stream.getTracks().forEach(track => track.stop());
       }
     };
   }, []);
+
 
   const handleEndCall = () => {
     if (isCaregiverView) {
